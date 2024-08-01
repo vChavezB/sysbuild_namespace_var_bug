@@ -24,11 +24,11 @@ jobs:
         run: |
           west init -l .
           west update -o=--depth=1 -n
-          ls
 
       - name: Sysbuild
       # Note: Do not build with sys build as currently passing variables after "--" is not working
       #       instead they are only sent to sysbuild but not mcuboot nor the app
         run: |
-          west build $GITHUB_WORKSPACE -b nrf52833dk_nrf52833 --sysbuild
+          cd ..
+          west build sysbuild_namespace_var_bug -b nrf52833dk_nrf52833 --sysbuild
    
