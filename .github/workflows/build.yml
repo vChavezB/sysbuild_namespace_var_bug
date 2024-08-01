@@ -1,0 +1,33 @@
+# Copyright (c) 2024, Victor Chavez (vchavezb@protonmail.com)
+# SPDX-License-Identifier: Apache-2.0
+
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-22.04
+    container: ghcr.io/zephyrproject-rtos/ci:v0.26.13
+    env:
+      CMAKE_PREFIX_PATH: /opt/toolchains
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Initialize
+        run: |
+          west init -l .
+          west update -o=--depth=1 -n
+
+      - name: Sysbuild
+      # Note: Do not build with sys build as currently passing variables after "--" is not working
+      #       instead they are only sent to sysbuild but not mcuboot nor the app
+        run: |
+          west build $GITHUB_WORKSPACE -b nrf52833dk_nrf52833 --sysbuild
+   
