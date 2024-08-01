@@ -1,0 +1,1 @@
+# sysbuild_namespace_var_bug
